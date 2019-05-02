@@ -90,7 +90,8 @@ stages:
        KEEP=1
        echo -e "PURGING REGISTRY, only keeping last ${KEEP} image(s) based on image digests"
        COUNT=0
-       LIST=$( bx cr images --restrict ${REGISTRY_NAMESPACE}/${IMAGE_NAME} --no-trunc --format '{{ .Created }} {{ .Repository }}@{{ .Digest }}' | sort -r -u | awk '{print $2}' | sed '$ d' )
+       # LIST=$( bx cr images --restrict ${REGISTRY_NAMESPACE}/${IMAGE_NAME} --no-trunc --format '{{ .Created }} {{ .Repository }}@{{ .Digest }}' | sort -r -u | awk '{print $2}' | sed '$ d' )
+       LIST=$( bx cr images --restrict ${REGISTRY_NAMESPACE}/${IMAGE_NAME} --no-trunc --format '{\"{ .Created }} {\"{ .Repository }}@{\"{ .Digest }}' | sort -r -u | awk '{print $2}' | sed '$ d' )   
        while read -r IMAGE_URL ; do
          if [[ "$COUNT" -lt "$KEEP" ]]; then
            echo "Keeping image digest: ${IMAGE_URL}"
